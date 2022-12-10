@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "database-boardcamp/src/server.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon database-boardcamp/src/server.js",
     "start": "node database-boardcamp/src/server.js"
