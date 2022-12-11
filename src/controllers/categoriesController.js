@@ -1,10 +1,10 @@
-import { connectionDB } from "../baseDados.js";
+import connectionDB from "../baseDados.js";
 
 export async function createCategories(req, res) {
   const { name } = req.body;
 
-  if(name == ""){
-    res.sendStatus(400)
+  if (name == "") {
+    res.sendStatus(400);
   }
 
   try {
@@ -19,7 +19,7 @@ export async function createCategories(req, res) {
 
 export async function findAllCategories(req, res) {
   try {
-    const { rows } = await connectionDB.query("SELECT * FROM categories");
+    const { rows } = await connectionDB.query("SELECT * FROM categories;");
     res.send(rows);
   } catch (err) {
     res.status(409).send(err.message);
