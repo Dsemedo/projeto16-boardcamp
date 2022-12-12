@@ -1,16 +1,16 @@
-import connectionDB  from "../baseDados.js";
+import connectionDB from "../baseDados.js";
 
 export async function createGames(req, res) {
   const { name, image, stockTotal, categoryId, pricePerDay } = req.body;
 
   try {
     await connectionDB.query(
-      "INSERT INTO games (name, image, stockTotal, categoryId, pricePerDay) VALUES ($1, $2, $3, $4, $5);",
+      'INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") VALUES ($1, $2, $3, $4, $5);',
       [name, image, stockTotal, categoryId, pricePerDay]
     );
     res.sendStatus(201);
   } catch (err) {
-    res.sendStatus(500).send(err.message);
+    res.status(500).send(err.message);
   }
 }
 

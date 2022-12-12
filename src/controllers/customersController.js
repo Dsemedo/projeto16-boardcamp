@@ -14,7 +14,7 @@ export async function findCustomer(req, res) {
 
   try {
     const { rows } = await connectionDB.query(
-      "SELECT * FROM customers WHERE id=$1;",
+      "SELECT *, customers.birthday::text FROM customers WHERE id=$1;",
       [id]
     );
 
@@ -35,7 +35,7 @@ export async function createCustomers(req, res) {
       "INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4);",
       [name, phone, cpf, birthday]
     );
-    res.status(201);
+    res.sendStatus(201);
   } catch (err) {
     res.status(500).send(err.message);
   }
