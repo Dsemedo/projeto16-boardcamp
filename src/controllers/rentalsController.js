@@ -1,4 +1,4 @@
-import connectionDB from "../baseDados.js";
+import connectionDB from "../db/baseDados.js";
 import dayjs from "dayjs";
 
 export async function findAllRentals(req, res) {
