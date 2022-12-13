@@ -1,4 +1,4 @@
-import connectionDB from "../baseDados.js";
+import connectionDB from "../db/baseDados.js";
 
 export async function createGames(req, res) {
   const { name, image, stockTotal, categoryId, pricePerDay } = req.body;

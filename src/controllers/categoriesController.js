@@ -1,4 +1,4 @@
-import connectionDB from "../baseDados.js";
+import connectionDB from "../db/baseDados.js";
 
 export async function createCategories(req, res) {
   const { name } = req.body;

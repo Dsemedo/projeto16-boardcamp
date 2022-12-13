@@ -7,7 +7,7 @@ export async function findAllRentals(req, res) {
   try {
     if (customerId && !gameId) {
       const onlyCustomerRentals = await connectionDB.query(
-        `SELECT rentals.*, JSON_BUILD_OBJECT('id', customers.id,
+        `SELECT * JSON_BUILD_OBJECT('id', customers.id,
         'name', customers.name) AS customer, 
         JSON_BUILD_OBJECT('id', games.id, 
         'name', games.name, 
@@ -65,15 +65,35 @@ export async function findAllRentals(req, res) {
   }
 }
 
-export async function finalizedRental(req, res) {}
+export async function finalizedRental(req, res) {
+  const { id } = req.params;
+  const rental = res.locals.rentals;
+
+  try {
+    rental.returnDate = dayjs().format("YYYY-MM-DD");
+
+    const rentDate = dayjs(rental.rentDate);
+
+    const returnDate = dayjs(rental.returnDate);
+
+    if (returnDate - rentDate <= rental.daysrentaled) {
+      rental.delayFee = 0;
+    } else {
+      rental.delayFee = rental.originalPrice * rental.daysRented;
+    }
+
+    await connectionDB.query(
+      `UPDATE rentals ("returnDate", "delayFee") SET ($1, $2) WHERE id=$3;`,
+      [dayjs().format("YYYY-MM-DD"), rental.delayFee, id]
+    );
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
 
 export async function createRental(req, res) {
   const { customerId, gameId, daysRented } = req.body;
-
-  const customer = await connectionDB.query(
-    "SELECT * FROM customers WHERE id=$1;",
-    [customerId]
-  );
 
   const game = await connectionDB.query("SELECT * FROM games WHERE id=$1;", [
     gameId,
@@ -101,4 +121,14 @@ export async function createRental(req, res) {
   }
 }
 
-export async function deleteRental(req, res) {}
+export async function deleteRental(req, res) {
+  const { id } = req.params;
+
+  try {
+    await connectionDB.query(`DELETE FROM rentals WHERE id=$1;`, [id]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+}

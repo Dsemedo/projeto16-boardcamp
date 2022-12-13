@@ -1,4 +1,4 @@
-import connectionDB from "../baseDados.js";
+import connectionDB from "../db/baseDados.js";
 
 export async function findAllCustomers(req, res) {
   try {

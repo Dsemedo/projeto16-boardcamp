@@ -15,5 +15,5 @@ app.use(gamesRoutes);
 app.use(customersRoutes);
 app.use(rentalRoutes);
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 app.listen(port, () => console.log(`Server running in port ${port}`));
